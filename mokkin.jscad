@@ -6,8 +6,8 @@
 function getParameterDefinitions() {
   return [
     //きらきら星
-    { name: 'onkai', type: 'text', initial: 'ドドソソララソ休フフミミレレド', caption: '音階' },
-    { name: 'dai_hutosa', type: 'float', initial: 6, caption: '台の太さ(mm)' },
+    { name: 'onkai', type: 'text', initial: '', caption: '音階' },
+    { name: 'dai_hutosa', type: 'float', initial: 3, caption: '台の太さ(mm)' },
     { name: 'ita_hutosa', type: 'float', initial: 2, caption: '鍵盤の板の太さ(mm)' },
     { name: 'ita_sukima', type: 'float', initial: 1, caption: '鍵盤の板の隙間(mm)' },
     ];
@@ -70,6 +70,84 @@ function main(p) {
 
         return 0;
     }
+
+   var l = vector_text(0,0,"s");
+   var start = [];
+
+   l.forEach(function(s) {
+        start.push(translate([0,0,0],rectangular_extrude(s, { w:3,h:8,center: true })));
+   });
+   start = scale(0.6,start);   
+   start = rotate([0,0,-80],start);
+   start = start.translate([30,12,0]);
+   
+   o.push(
+        difference(
+            start
+        ).subtract(o)
+    );
+
+   l = vector_text(0,0,"<");
+   start = [];
+
+   l.forEach(function(s) {
+        start.push(translate([0,0,0],rectangular_extrude(s, { w:3,h:8,center: true })));
+   });
+   start = scale(0.6,start);
+   start = rotate([0,0,-20],start);
+   start = start.translate([10,28,0]);
+   
+   o.push(
+        difference(
+            start
+        ).subtract(o)
+    );
     
+   l = vector_text(0,0,")");
+   start = [];
+
+   l.forEach(function(s) {
+        start.push(translate([0,0,0],rectangular_extrude(s, { w:3,h:8,center: true })));
+   });
+   start = scale(0.6,start);
+   start = rotate([0,0,40],start);
+   start = start.translate([30,17,0]);
+   
+   o.push(
+        difference(
+            start
+        ).subtract(o)
+    );
+    
+/*
+   l = vector_text(0,0,p.bpm + "bpm");
+   start = [];
+
+   l.forEach(function(s) {
+        start.push(translate([0,0,0],rectangular_extrude(s, { w:3.3,h:8.8,center: true })));
+   });
+   start = scale(0.5,start);
+   start = rotate([0,0,-90],start);
+   start = start.translate([-25,32,0]);
+ */
+
+   o.push(
+        difference(
+            cube({size: [15,60,2]}).translate([-30,-30,2])
+        ).subtract(o)
+    );    
+    
+    var ita_hame = cube({size: [24,6,20]}).translate([-5,-20,2]);
+    var ita = cube({size: [20,40,2]}).translate([60,-20,0]);
+    
+    ita_hame = difference(
+        ita_hame,
+        cube({size: [20.3,2.3,40]}).translate([-3.15,-18.15,2])
+    );
+
+   o.push(
+        ita,ita_hame
+    );    
+
     return union(o);
 }
